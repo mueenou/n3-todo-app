@@ -3,7 +3,8 @@
     <div class="i-carbon-list-boxes p1"></div>
     <p class="text-sm">Nuxt3-UnoCSS-todoapp</p>
     <div class="flex-auto"></div>
-
+    <p class="text-sm">Check the code Github !</p>
+    <div class="i-carbon-arrow-right animate-swing animate-count-infinite"></div>
     <nuxt-link to="https://github.com/mueenou/n3-todo-app.git">
       <div
         class="text-white rounded grid place-content-center bg-hover-base cursor-pointer p1 duration-300"

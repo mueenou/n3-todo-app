@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <NuxtPage class="h-screen w-full font-mono box-border" />
+    <NuxtPage class="w-full font-mono box-border" />
   </NuxtLayout>
 </template>
 

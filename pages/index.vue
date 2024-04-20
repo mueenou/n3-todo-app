@@ -92,7 +92,6 @@ const tasks = ref([
   { id: 2, name: "Task 2", isDone: true, isEditing: false },
   { id: 3, name: "Task 3", isDone: false, isEditing: false },
   { id: 4, name: "Task 4", isDone: true, isEditing: false },
-  { id: 5, name: "Task 5", isDone: false, isEditing: false },
 ]);
 
 const newTaskName = ref("");
