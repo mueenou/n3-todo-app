@@ -28,7 +28,7 @@
           id="new-todo"
           placeholder="write your next task"
           v-model="newTaskName"
-          class="w-full h-10 rounded-full border-none px-2 bg-base text-sm font-900"
+          class="w-full h-10 rounded-full border-none px-2 bg-base text-sm font-900 placeholder-gray-400"
           @keyup.enter="addTask"
         />
         <button
@@ -98,7 +98,7 @@ const tasks = ref([
 const newTaskName = ref("");
 
 function addTask() {
-  if (!newTaskName) {
+  if (!newTaskName.value) {
     alert("Please enter a task name");
     return;
   }
