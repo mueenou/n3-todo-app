@@ -76,7 +76,10 @@
           >
             <div
               :class="task.isEditing ? 'i-carbon-checkmark' : 'i-carbon-edit'"
-              @click="editTask(task.id)"
+              @click="
+                if (task.isEditing) editTask(task.id);
+                else toggleEditTask(task.id);
+              "
             ></div>
             <div class="i-carbon-trash-can" @click="deleteTask(task.id)"></div>
           </div>
@@ -121,8 +124,14 @@ function deleteTask(taskId) {
 
 const editTaskInput = ref<HTMLInputElement>(null);
 const editTaskValue = ref<string>("");
-function editTask(taskId) {
+function toggleEditTask(taskId) {
   const task = tasks.value.find((task) => task.id === taskId);
   task.isEditing = !task.isEditing;
+}
+
+function editTask(taskId) {
+  const task = tasks.value.find((task) => task.id === taskId);
+  task.name = editTaskValue.value;
+  task.isEditing = false;
 }
 </script>
