@@ -1,8 +1,9 @@
 <template>
-  <nav class="flex flex-row font-mono p2 items-center gap-x-2 shadow-sm box-border">
+  <nav class="flex flex-row font-mono p2 items-center gap-x-2 box-border">
     <div class="i-carbon-list-boxes p1"></div>
     <p class="text-sm">Nuxt3-UnoCSS-todoapp</p>
     <div
+      v-if="status === 'authenticated'"
       class="flex flex-row items-center p1 rounded grid place-content-center bg-red:70 cursor-pointer duration-300"
       @click="handleLogout"
     >
@@ -10,7 +11,7 @@
     </div>
     <div class="flex-auto"></div>
 
-    <p class="text-sm hidden md:block">Check the Github repo !</p>
+    <p class="text-sm hidden md:block">Check out the Github repo !</p>
     <div
       class="i-carbon-arrow-right animate-swing animate-count-infinite hidden md:block"
     ></div>
@@ -35,7 +36,7 @@
 <script setup>
 const color = useColorMode();
 
-const { data, signOut } = useAuth();
+const { data, signOut, status } = useAuth();
 
 function toggleColorMode() {
   color.value = color.value === "dark" ? "light" : "dark";
