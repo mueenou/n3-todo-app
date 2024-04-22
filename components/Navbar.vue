@@ -10,8 +10,10 @@
     </div>
     <div class="flex-auto"></div>
 
-    <p class="text-sm">Check the Github repo !</p>
-    <div class="i-carbon-arrow-right animate-swing animate-count-infinite"></div>
+    <p class="text-sm hidden md:block">Check the Github repo !</p>
+    <div
+      class="i-carbon-arrow-right animate-swing animate-count-infinite hidden md:block"
+    ></div>
     <nuxt-link to="https://github.com/mueenou/n3-todo-app.git">
       <div
         class="rounded text-black grid dark:text-white place-content-center bg-hover-base cursor-pointer p1 duration-300"
