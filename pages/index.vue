@@ -39,7 +39,9 @@
         </button>
       </div>
       <div class="flex flex-col text-xl gap-y-2 w-[95%]">
+        <div v-if="pending">Loading tasks</div>
         <div
+          v-else
           v-for="task in tasks"
           :key="task.id"
           class="flex flex-row items-center p2 flex-justify-between w-full bg-base rounded-2xl"
@@ -51,7 +53,7 @@
                 task.isDone ? 'i-carbon-circle-filled bg-red' : 'i-carbon-circle-dash'
               "
               class="cursor-pointer duration-300"
-              @click="toggleTaskStatus(task.id)"
+              @click="toggleTaskStatus(task._id)"
             ></div>
             <div
               v-if="!task.isEditing"
@@ -77,11 +79,11 @@
             <div
               :class="task.isEditing ? 'i-carbon-checkmark' : 'i-carbon-edit'"
               @click="
-                if (task.isEditing) editTask(task.id);
-                else toggleEditTask(task.id);
+                if (task.isEditing) editTask(task._id);
+                else toggleEditTask(task._id);
               "
             ></div>
-            <div class="i-carbon-trash-can" @click="deleteTask(task.id)"></div>
+            <div class="i-carbon-trash-can" @click="deleteTask(task._id)"></div>
           </div>
         </div>
       </div>
@@ -90,47 +92,58 @@
 </template>
 
 <script setup lang="ts">
-const tasks = ref([
-  { id: 1, name: "Task 1", isDone: false, isEditing: false },
-  { id: 2, name: "Task 2", isDone: true, isEditing: false },
-  { id: 3, name: "Task 3", isDone: false, isEditing: false },
-  { id: 4, name: "Task 4", isDone: true, isEditing: false },
-]);
+definePageMeta({
+  middleware: "auth",
+});
+const { data, status, getCsrfToken, getProviders } = useAuth();
+
+const { data: tasks, pending } = await useFetch("/api/task", {
+  transform: (t) => t.filter((task) => task.author === data.value.user._id),
+});
 
 const newTaskName = ref("");
 
-function addTask() {
+async function addTask() {
   if (!newTaskName.value) {
     alert("Please enter a task name");
     return;
   }
-  tasks.value.push({
-    id: tasks.value.length + 1,
-    name: newTaskName.value,
-    isDone: false,
-    isEditing: false,
+  const newTask = await $fetch("/api/task", {
+    method: "POST",
+    body: { name: newTaskName.value, author: data.value.user._id },
   });
+
+  tasks.value.push(newTask);
   newTaskName.value = "";
 }
 
 function toggleTaskStatus(taskId) {
-  const task = tasks.value.find((task) => task.id === taskId);
+  const task = tasks.value.find((task) => task._id === taskId);
   task.isDone = !task.isDone;
 }
 
-function deleteTask(taskId) {
-  tasks.value = tasks.value.filter((task) => task.id !== taskId);
+async function deleteTask(taskId) {
+  const data = await $fetch(`/api/task/${taskId}`, {
+    method: "DELETE",
+  });
+
+  tasks.value = tasks.value.filter((task) => task._id !== taskId);
 }
 
 const editTaskInput = ref<HTMLInputElement>(null);
 const editTaskValue = ref<string>("");
 function toggleEditTask(taskId) {
-  const task = tasks.value.find((task) => task.id === taskId);
+  const task = tasks.value.find((task) => task._id === taskId);
   task.isEditing = !task.isEditing;
 }
 
-function editTask(taskId) {
-  const task = tasks.value.find((task) => task.id === taskId);
+async function editTask(taskId) {
+  const data = await $fetch(`/api/task/${taskId}`, {
+    method: "PUT",
+    body: { name: editTaskValue.value },
+  });
+
+  const task = tasks.value.find((task) => task._id === taskId);
   task.name = editTaskValue.value;
   task.isEditing = false;
 }
