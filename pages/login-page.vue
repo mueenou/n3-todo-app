@@ -51,6 +51,8 @@ async function handleLogin(e: Event) {
   try {
     const res = await signIn("credentials", form.value);
     router.push({ name: "index" });
-  } catch (error) {}
+  } catch (error) {
+    alert("Invalid credentials");
+  }
 }
 </script>

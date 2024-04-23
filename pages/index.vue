@@ -10,6 +10,7 @@
           <p class="font-light text-sm">Keep it up</p>
         </div>
         <div
+          v-if="tasks?.length"
           id="todo-counter"
           class="bg-red h20 w20 rounded-full grid place-content-center text-black text-2xl"
         >
@@ -38,7 +39,7 @@
           <p class="text-2xl text-black font-extrabold">+</p>
         </button>
       </div>
-      <div class="flex flex-col text-xl gap-y-2 w-[95%]">
+      <div class="flex flex-col text-xl gap-y-2 w-[95%]" v-if="tasks">
         <div v-if="pending">Loading tasks</div>
         <div
           v-else
